@@ -1,0 +1,24 @@
+WeDoCare — Google sign-in setup
+================================
+
+The login page now has a patient-only “Continue with Google” option. OAuth will not work until you configure your own Google OAuth credentials.
+
+1. Open Google Cloud Console: https://console.cloud.google.com/
+2. Create/select a project and configure the OAuth consent screen / Google Auth Platform.
+3. Create an OAuth client ID of type “Web application”.
+4. Add your deployed callback URL to “Authorized redirect URIs”, exactly matching the value in google_oauth_config.php. Example:
+   https://your-domain.example/google_callback.php
+5. Edit google_oauth_config.php and replace:
+   PASTE_GOOGLE_CLIENT_ID_HERE
+   PASTE_GOOGLE_CLIENT_SECRET_HERE
+   https://YOUR-DOMAIN/google_callback.php
+   with your own client ID, client secret, and exact HTTPS callback URL.
+6. Do not share, publish, or commit the client secret. If using Git, exclude this config file or load secrets from environment variables.
+7. Ensure the site is served over HTTPS and the PHP host can make outbound HTTPS requests to Google.
+
+Behavior / safety:
+- Google sign-in only works for an existing active patient account with a patient record and the same verified email address.
+- It does not create accounts automatically, and Google sign-in cannot be used for doctor accounts.
+- A patient should first register through the normal WeDoCare registration form using the Google email they intend to use.
+- OAuth state is checked and the session ID is regenerated after sign-in.
+- Test using a non-sensitive test patient account before using the feature.
